@@ -16,6 +16,10 @@ A dual-phase multi-agent coding system:
 5. **Day-phase handoff schema:** The day→night contract — a per-slice record carrying a `test_contract` (the failing tests = the spec), `depends_on` (DAG input), `deterministic_execution_procedure`, `retry_budget`, `priority` (backend-first), and a `blocked`-slice contract for morning review.
 6. **Local-LLM constraints:** Ollama is cheap-but-slow → minimize model calls; deterministic steps (Docker, test runner) run without the model; the model is called only on genuine failure, capped by `retry_budget`.
 
+## Related tools / prior art
+- ⚠️ **Evaluated — vscode-copilot-orchestrator** (https://github.com/JeromySt/vscode-copilot-orchestrator): a VS Code extension that runs **multiple Copilot agents in parallel**, each in its own git worktree, over a DAG with an 8-phase pipeline (merge → prechecks → AI work → commit → postchecks → merge → cleanup), auto-heal (4 retries with fresh agents + failure context), snapshot validation, and pause/resume.
+  > *Resume:* **Not adopted — evaluated as prior art.** It proves the parallel-DAG + auto-heal + snapshot-validation + pause/resume patterns are real and battle-tested, and several map onto resolved decisions: Kahn-level parallelism (Phase-2), `retry_budget`/rollback-on-regression (auto-heal), and day→night handoff (pause/resume). It's **compatible** with D1 — Ollama drives Copilot CLI with headless mode (`ollama launch copilot --model <x> --yes -- -p "..."`), so the extension runs on local models, not cloud-only. Caveats: worktree isolation gives parallel-*edit* isolation but **none** of the Docker sandbox properties (network egress, destructive-command detection, capability separation); and it runs *many* agents in parallel, which sits at the opposite pole from the deterministic-executor core. Worth **adapting** (auto-heal, snapshot validation, pause/resume), not adopting wholesale. Final call: user's to decide.
+
 ## Confidence labels
 - 🟢 solid: Docker sandbox for headless runs; `max_round` token budgets; external audit logging.
 - 🟡 untested: Per-slice rollback; embedding-based slice retrieval (RAG); JSONL ledger (proposed, not implemented).
