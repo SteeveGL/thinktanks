@@ -63,3 +63,19 @@
 - **Cross-project memory** via embeddings from past projects.
 - **Multi-model routing** — cheap model for slicing/tests, expensive for hard implementation.
 - **Feature-flagged incremental delivery** so partial functionality is usable immediately.
+
+## 9. Design Artifacts
+
+The divergent brainstorm above has converged. Two **design-level** artifacts
+(schema + illustrative snippets, no full implementation) capture the converged
+decisions. They live in [`design/`](./design) and are linked from here — their
+content is NOT duplicated inline.
+
+- [`design/dependency-dag.md`](./design/dependency-dag.md) — **Dependency DAG.**
+  Nodes = slices, edges = data/dependency edges, YAML-based, with a topological
+  sort that *enforces* backend-first. Includes Kahn-levels (parallelism), critical
+  path, risk/size scoring, and integration with the closed per-slice night loop.
+- [`design/day-phase-handoff-schema.md`](./design/day-phase-handoff-schema.md) —
+  **Day-Phase Handoff Schema.** The day→night contract: a per-slice record with a
+  `test_contract` (the spec), `depends_on` (DAG input), `deterministic_execution_procedure`,
+  `retry_budget`, and a `blocked`-slice contract for morning review.

@@ -10,7 +10,7 @@ A dual-phase multi-agent coding system:
 
 ## Converged recommendations (top 6)
 1. **Handoff:** Use a **JSONL handoff ledger** (append-only, crash-safe, framework-agnostic) as the day→night bridge, rather than in-memory state or heavy container snapshots.
-2. **Backend-first critical path:** The backend owns the data model / persistence / API contract. The build order is *enforced* — everything else rides on top.
+2. **Backend-first critical path (default heuristic):** the backend owns the data model / persistence / API contract, so the default build order is backend-first. This is a priority signal, not a hard must — dev order should never block a better design choice.
 3. **Deterministic night loop:** A **closed per-slice loop** — write code → Docker-run tests → feed failure → retry with a hard cap → else mark `blocked` and refuse to advance. No open-ended conversational loops.
 4. **Dependency DAG (YAML):** Nodes = slices, edges = data/dependency edges. YAML chosen for human-editability + rich per-node metadata (weights, risk, phase). A topological sort **enforces** backend-first ordering.
 5. **Day-phase handoff schema:** The day→night contract — a per-slice record carrying a `test_contract` (the failing tests = the spec), `depends_on` (DAG input), `deterministic_execution_procedure`, `retry_budget`, `priority` (backend-first), and a `blocked`-slice contract for morning review.
