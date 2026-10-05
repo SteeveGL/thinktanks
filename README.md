@@ -4,7 +4,7 @@ A collection of independent Thinktank sessions. Each session is an isolated expe
 
 ## How this repo works
 
-Every session lives in its own PascalCase folder under the repo root. For the rules that govern how sessions are created, named, and kept isolated, see [`.copilot-instructions.md`](./.copilot-instructions.md).
+Every session lives in its own folder under the repo root. For the rules that govern how sessions are created, named, and kept isolated, see [`.copilot-instructions.md`](./.copilot-instructions.md).
 
 ### Session structure
 
@@ -22,4 +22,5 @@ Every session lives in its own PascalCase folder under the repo root. For the ru
 
 ## Sessions
 
-- [`DualPhaseCoding`](./DualPhaseCoding/) — existing session.
+- [`DualPhaseCoding`](./DualPhaseCoding/) — dual-phase multi-agent coding system.
+- [`DockerAgentNetwork`](./DockerAgentNetwork/) — single-VM, Docker Compose multi-model agent network (LiteLLM gateway + LangGraph).
